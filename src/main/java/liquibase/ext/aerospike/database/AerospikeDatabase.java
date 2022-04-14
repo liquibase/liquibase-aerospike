@@ -7,6 +7,8 @@ import liquibase.configuration.ConfiguredValue;
 import liquibase.database.AbstractJdbcDatabase;
 import liquibase.database.DatabaseConnection;
 import liquibase.exception.DatabaseException;
+import liquibase.statement.SqlStatement;
+import liquibase.statement.core.RawCallStatement;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +18,12 @@ public class AerospikeDatabase extends AbstractJdbcDatabase {
     public static final String PRODUCT_NAME = "Aerospike";
     public static final String SHORT_PRODUCT_NAME = "aerospike";
     public static final Integer DEFAULT_PORT = 3300;
+
+    @Override
+    protected SqlStatement getConnectionSchemaNameCallStatement(){
+        //TODO: need to figure out how to get current schema/namespace
+        return new RawCallStatement("select schema_name()");
+    }
 
     @Override
     protected String getDefaultDatabaseProductName() {
